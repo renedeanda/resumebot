@@ -11,9 +11,6 @@ var badwordsList = require('badwords-list'),
     badwordsObject = badwordsList.object,
     badwordsRegex = badwordsList.regex;
 
-//const echoModule = require('./modules/echo');
-//const helpModule = require('./modules/help');
-
 const bot = new BootBot({
   accessToken: process.env.PAGE_ACCESS_TOKEN,
   verifyToken: process.env.VERIFY_TOKEN,
@@ -22,16 +19,10 @@ const bot = new BootBot({
 
 const disableInput = false;
 
-//bot.module(echoModule);
-//bot.module(helpModule);
-
 bot.setGreetingText([
   {
     locale:'default',
-    text:`Hello {{user_first_name}}~ I'm the personal bot of René, a marketing dev based in Vietnam!`
-  }, {
-    locale:'vi_VN',
-    text:`Xin Chào {{user_first_name}}~ I'm the personal bot of René, a marketing dev based in Vietnam!`
+    text:`Hello {{user_first_name}}~ I'm the personal bot of NAME!`
   }
 ]);
 
@@ -39,7 +30,7 @@ bot.setGetStartedButton((payload, chat) => {
   chat.getUserProfile().then((user) => {
     chat.conversation(convo => {
       convo.ask({
-        text: `Hi ${user.first_name}! Are you excited to learn more about René?`,
+        text: `Hi ${user.first_name}! Are you excited to learn more about NAME?`,
         quickReplies: [{
           content_type:'text',
           title:'Sure.. why not 🤔',
@@ -57,7 +48,7 @@ bot.setGetStartedButton((payload, chat) => {
 
 bot.setPersistentMenu([
   {
-    title: 'Random René fact 😆',
+    title: 'Random fact 😆',
     type: 'postback',
     payload: 'PERSISTENT_MENU_RANDOM'
   },
@@ -67,26 +58,29 @@ bot.setPersistentMenu([
     payload: 'PERSISTENT_MENU_HELP'
   },
   {
-    title: 'Iowadev.com',
+    title: 'Example.com',
     type: 'web_url', 
-    url: 'http://iowadev.com'
+    url: 'http://example.com'
   }
 ], disableInput);
 
 const askRandomFact = (chat) => {
-  var randomFacts = [`I love to travel. I've been to Mexico, France, Spain, Italy, Japan, South Korea, Singapore, Vietnam, and Cambodia.`,
-                     `I'm addicted to podcasts. My favorite currently is NPR's How I Built This https://www.npr.org/podcasts/510313/how-i-built-this. Tell me your favorite! 🎙`,
-                     `I love a good cup of coffee, how about you? ☕`,
-                     `I try to spend a lot of time reading 📖. Got any book recommendations? Here's what I've read so far https://goodreads.com/reneian`,
-                     `I love to create things! My favorites are programming 💻, writing 📝, & photography 📸.  Try typing 'create', 'writing', 'photography' to find out more about my creative work.`,
-                     `I'm really passionate about mental health & practicing gratitude. I have an Android app you should check out sometime: https://delightful.today/ 🙏`,
-                     `I'm an engineer/marketer. I have an undergrad engineering degree & MBA in marketing. If you need support with your marketing or mobile development learn more about my qualifications by typing 'resume', 'career', 'connect', 'contact'.🎓`]
+  var randomFacts = [`Fact 1`,
+                     `Fact 2`,
+                     `Fact 3`,
+                     `Fact 4`,
+                     `Fact 5`,
+                     `Fact 6`,
+                     `Fact 7`,
+                     `Fact 8`,
+                     `Fact 9`,
+                     `Fact 10`]
   var randomFact = randomFacts[Math.floor(Math.random()*randomFacts.length)];
   chat.getUserProfile().then((user) => {
     //Put array of facts here along with image assets
-       chat.say(`Here is a random fact about René...`).then(() => {
+       chat.say(`Here is a random fact about NAME...`).then(() => {
          chat.say(randomFact).then(() => {
-           chat.say(`Type 'Another' for another random fact about René or 'Help' to get more tips 💡`)
+           chat.say(`Type 'Another' for another random fact about NAME or 'Help' to get more tips 💡`)
          })
        });              
   }
@@ -143,9 +137,9 @@ bot.hear(['social','work','follow','create','reflect','writing','photos','photog
         chat.say({
 		      text: 'Find my creative work here:',
 		      buttons: [
-            { type: 'web_url', url: 'https://medium.com/@reneian', title: 'Medium'},
-            { type: 'web_url', url: 'https://unsplash.com/@reneian', title: 'Unsplash' },
-            { type: 'web_url', url: 'https://www.instagram.com/reneian/', title:'Instagram'}
+            { type: 'web_url', url: 'https://medium.com/', title: 'Medium'},
+            { type: 'web_url', url: 'https://unsplash.com/', title: 'Unsplash' },
+            { type: 'web_url', url: 'https://www.instagram.com/', title:'Instagram'}
 		        ]
       });
     });
@@ -156,9 +150,9 @@ bot.hear(['career','resume','programming','connect','contact'], (payload, chat,d
   chat.say({
 		text: 'Find my work, I love helping & connecting with new people',
 		buttons: [
-      { type: 'web_url', url: 'http://iowadev.com', title: 'Iowadev.com'},
-      { type: 'web_url', url: 'https://github.com/renedeanda', title: 'GitHub' },
-			{ type: 'web_url', url: 'https://www.linkedin.com/in/renedeanda/', title:'LinkedIn'}
+      { type: 'web_url', url: 'http://example.com', title: 'Example.com'},
+      { type: 'web_url', url: 'https://github.com/', title: 'GitHub' },
+			{ type: 'web_url', url: 'https://www.linkedin.com/', title:'LinkedIn'}
 		]
 	});
 });
@@ -168,7 +162,7 @@ bot.hear(['career','resume','programming','connect','contact'], (payload, chat,d
 bot.hear(['delightful','happiness','happy','funny','hilarious'], (payload, chat, data) => {
   var positiveItems = ['delightful','happiness','happy','funny','cute pet','puppies','puppy', 'kitten','kittens','hilarious'];
   var positiveItem = positiveItems[Math.floor(Math.random()*positiveItems.length)];
-  chat.say('Finding a delightful gif...');
+  chat.say('Finding a gif...');
   fetch(GIPHY_URL + positiveItem)
     .then(res => res.json())
     .then(json => {
@@ -183,7 +177,7 @@ bot.hear(['delightful','happiness','happy','funny','hilarious'], (payload, chat,
 
 bot.on('message', (payload, chat, data) => {
   if (!data.captured) {
-	chat.say(`Your message will require a human response, if I don't respond on FB right away please do drop me a note: rene@iowadev.com 📧`);
+	chat.say(`Your message will require a human response, if I don't respond on FB right away please do drop me a note: EMAIL 📧`);
   }
 });
 
@@ -192,7 +186,7 @@ bot.hear(['help','what','what do I type','what do I say','are you there'], (payl
 		text: 'What do you need help with?',
 		buttons: [
 			{ type: 'postback', title: 'What do I type? 💡', payload: 'HELP_TYPEWHAT' },
-			{ type: 'postback', title: 'Talk to René 📧' , payload: 'HELP_HUMAN' }
+			{ type: 'postback', title: 'Talk to NAME 📧' , payload: 'HELP_HUMAN' }
 		]
 	});
 });
@@ -222,7 +216,7 @@ bot.on('postback:PERSISTENT_MENU_HELP', (payload, chat) => {
 });
 
 bot.on('postback:HELP_HUMAN', (payload, chat) => {
-  chat.say(`Drop me a note: rene@iowadev.com 📧`);                  
+  chat.say(`Drop me a note: EMAIL 📧`);                  
 });
 
 bot.on('postback:PERSISTENT_MENU_RANDOM', (payload, chat) => {
